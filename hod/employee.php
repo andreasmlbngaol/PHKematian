@@ -135,7 +135,6 @@ $districts = getOutletDistrict();
 
         $('.fire-button').click(function() {
             id = $(this).val();
-            console.log(id);
             var confirmation = confirm('Fire ' + id + '?');
             if(confirmation == true) {
                 $.ajax({

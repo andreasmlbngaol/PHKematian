@@ -19,11 +19,11 @@ $districts = getOutletDistrict();
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ADD EMPLOYEE</title>
+    <title>INPUT SURVEY</title>
     <script src="../../src/js/jquery-3.5.1.min.js"></script>
 </head>
 <body>
-    <h1>ADD EMPLOYEE</h1>
+    <h1>INPUT SURVEY</h1>
     <form action="" method="post">
         <div>
             <label for="district">District</label>
@@ -67,6 +67,7 @@ $districts = getOutletDistrict();
         <button type="submit" name="submit" id="submit">Insert</button>
     </form>
     <script>
+        document.getElementById('date').valueAsDate = new Date();
         $('#district').change(function() {
             var district = $(this).val();
             $.ajax({

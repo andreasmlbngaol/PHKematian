@@ -58,7 +58,7 @@ $districts = getOutletDistrict();
             <td><?php echo $result['rating'] ?></td>
             <td><?php echo $result['description'] ?></td>
         </tr>
-        <?php $i; } ?>
+        <?php $i++ ; } ?>
     </table>
     <script>
         $("#district").change(function() {

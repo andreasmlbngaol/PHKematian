@@ -163,7 +163,7 @@ function getEmployee($district = "", $area = "", $outlet = "") {
         $query = "SELECT * FROM employee";
     } else if($area == "all") {
         $query = "SELECT * FROM employee WHERE district = '$district'";
-    } else if($outlet = "all") {
+    } else if($outlet == "all") {
         $query = "SELECT * FROM employee WHERE district = '$district' AND area = '$area'";
     } else {
         $query = "SELECT * FROM employee WHERE district = '$district' AND area = '$area' AND outlet = '$outlet'";
@@ -219,6 +219,11 @@ function addEmployee($post) {
         return false;
     }
     return true;
+}
+
+function getSellingOutlet($district = "", $area = "", $outlet = "") {
+    $query = "SELECT * FROM selling WHERE district = '$district' AND area = '$area' AND outlet = '$outlet'";
+    return query($query);
 }
 
 // function untuk lupa password

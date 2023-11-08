@@ -102,6 +102,11 @@ function login($post) {
     return true;
 }
 
+function getPosition() {
+    $query = "SELECT DISTINCT * FROM code WHERE class='position'";
+    return query($query);
+}
+
 function getOutletDistrict() {
     $query = "SELECT DISTINCT district FROM outlet";
     return query($query);
@@ -134,7 +139,87 @@ function getSurvey($district = "", $area = "") {
     return query($query);
 }
 
+function insertSurvey($post) {
+    global $conn;
+    $date = $post['date'];
+    $outlet = $post['outlet'];
+    $area = $post['area'];
+    $district = $post['district'];
+    $rating = $post['rating'];
+    $description = $post['description'];
 
+    $query = "INSERT INTO survey VALUE ('', '$date', '$outlet', '$area', '$district', $rating, '$description')";
+    mysqli_query($conn, $query);
+    if(mysqli_affected_rows($conn) < 1) {
+        alert("Error");
+        return false;
+    }
+
+    return true;
+}
+
+function getEmployee($district = "", $area = "", $outlet = "") {
+    if($district == "" || $district == "all") {
+        $query = "SELECT * FROM employee";
+    } else if($area == "all") {
+        $query = "SELECT * FROM employee WHERE district = '$district'";
+    } else if($outlet = "all") {
+        $query = "SELECT * FROM employee WHERE district = '$district' AND area = '$area'";
+    } else {
+        $query = "SELECT * FROM employee WHERE district = '$district' AND area = '$area' AND outlet = '$outlet'";
+    }
+    return query($query);
+}
+
+function addEmployee($post) {
+    global $conn;
+    $name = $post['name'];
+
+    $positionId = $post['position'];
+    $query = "SELECT * FROM code WHERE class = 'position' AND code = '$positionId'";
+    $result = query($query);
+    $result = $result[0];
+    $position = $result['meaning'];
+
+    $outletId = $post['outlet'];
+    $query = "SELECT * FROM outlet WHERE id = '$outletId'";
+    $result = query($query);
+    $result = $result[0];
+    $outlet = $result['outlet'];
+    $area = $result['area'];
+    $district = $result['district'];
+
+    $testId = (int) ($outletId . $positionId . '001');
+    $query = "SELECT * FROM employee WHERE outlet = '$outlet' AND area = '$area' AND district = '$district'";
+    $employees = query($query);
+    if($employees != NULL) {
+        $employeeUnavailable = [];
+        foreach($employees as $employee) {
+            array_push($employeeUnavailable, (int) $employee['id']);
+        }
+        while(true) {
+            if(in_array($testId, $employeeUnavailable)) {
+                $testId++;
+            } else {
+                break;
+            }
+        }
+    }
+    $id = $testId;
+
+    $id = strval($id);
+    if(strlen($id) < 12) {
+        $id = '0' . $id;
+    }
+
+    $query = "INSERT INTO employee VALUES ('$id', '$name', '$position', '$outlet', '$area', '$district')";
+    mysqli_query($conn, $query);
+    if(mysqli_affected_rows($conn) < 1) {
+        alert('Error');
+        return false;
+    }
+    return true;
+}
 
 // function untuk lupa password
 function forgetPassword($post) {

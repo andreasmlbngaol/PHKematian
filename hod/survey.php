@@ -19,7 +19,7 @@ $districts = getOutletDistrict();
 </head>
 <body>
     <h1>HOD SURVEY</h1>
-
+    <a href="survey/">Input Survey Result</a>
     <div>
         <div>
             <label for="district">District:</label>
@@ -61,9 +61,8 @@ $districts = getOutletDistrict();
         <?php $i; } ?>
     </table>
     <script>
-        $("#district").change(function(e) {
+        $("#district").change(function() {
             var district = $(this).val();
-            console.log(district);
             $.ajax({
                 type: "POST",
                 url: "ajax/outletarea.php",
